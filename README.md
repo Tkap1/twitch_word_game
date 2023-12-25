@@ -11,4 +11,4 @@ Create an environment variable called `twitch_client_id` with a value equal to y
 Replace the `twitch_client_id` variable on line 16 with your twitch client id
 
 # How to set the target channel
-Replace the `g_target_channel` variable in line 9 with your channel name
+Replace the `g_target_channel` variable on line 9 with your channel name
