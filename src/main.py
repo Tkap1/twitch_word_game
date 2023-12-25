@@ -36,7 +36,6 @@ def main():
 		if not data: break
 		data = data.decode()
 		data = data.splitlines()[0]
-		# print(data)
 
 		if "PRIVMSG" in data:
 			splits = data.split(";")
