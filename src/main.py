@@ -83,26 +83,22 @@ def do_game():
 		if advance_round:
 			advance_round = False
 			curr_round += 1
-
-			if curr_round >= 8:
-				sorted_players = dict(sorted(players.items(), key=lambda item: item[1], reverse=True))
-				if len(sorted_players) > 1 and list(sorted_players.values())[0] == list(sorted_players.values())[1]:
-					send_chat_msg(g_twitch, f"There was a tie! Let's do another round!")
-
-				else:
-					send_chat_msg(g_twitch, f"{list(sorted_players.keys())[0]} wins!")
-					for key in list(sorted_players.keys())[:5]:
-						value = sorted_players[key]
-						send_chat_msg(g_twitch, f"{key}: {value}")
-						time.sleep(1)
-					input("Press ENTER...")
-					restart_game = True
-					continue
+			sorted_players = dict(sorted(players.items(), key=lambda item: item[1], reverse=True))
+			keys = list(sorted_players.keys())
+			if len(keys) > 0 and sorted_players[keys[0]] >= 5:
+				send_chat_msg(g_twitch, f"{list(sorted_players.keys())[0]} wins!")
+				for key in keys[:5]:
+					value = sorted_players[key]
+					send_chat_msg(g_twitch, f"{key}: {value}")
+					time.sleep(1)
+				input("Press ENTER...")
+				restart_game = True
+				continue
 
 			round_start_time = time.time()
 			chosen = random.randrange(0, len(words))
 			print(f"The word is: {words[chosen]}")
-			send_chat_msg(g_twitch, f"Round {curr_round} started!")
+			send_chat_msg(g_twitch, f"Round {curr_round} started!" + (" First to 5 wins" if curr_round == 1 else ""))
 
 		if time.time() - round_start_time >= 60:
 			send_chat_msg(g_twitch, f"Nobody got it! The word was: {words[chosen]}")
@@ -116,7 +112,7 @@ def do_game():
 				score = players.setdefault(msg[0], 0)
 				players[msg[0]] = score + 1
 				advance_round = True
-				send_chat_msg(g_twitch, f"{msg[0]} got it! The word was: {words[chosen]}")
+				send_chat_msg(g_twitch, f"{msg[0]} got it! The word was: {words[chosen]}. They have {score + 1} point{'s'if score + 1 > 1 else ''}")
 				break
 
 		time.sleep(0.01)
